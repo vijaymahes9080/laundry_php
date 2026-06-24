@@ -109,7 +109,7 @@
         <div class="pull-right hidden-xs">
           <b>Version</b> 2.3.0
         </div>
-        <strong>Copyright &copy; 2016-2017 <a href="http://www.google.com">Laundry Shop</a>.</strong> All rights reserved.
+        <strong>Copyright &copy; 2016-2026 <a href="https://github.com/vijaymahes9080">Vijay Mahes</a>.</strong> All rights reserved.
       </footer>
 
       <div class="control-sidebar-bg"></div>

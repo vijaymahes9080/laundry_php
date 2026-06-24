@@ -97,4 +97,4 @@ class Laundry extends Database implements iLaundry {
 }//end class
 $laundry = new Laundry();
 /* End of file Laundry.php */
-/* Location: .//D/xampp/htdocs/laundry/class/Laundry.php */
+/* Location: d:/BACKUP/projects/PHP project/laundry/class/Laundry.php */

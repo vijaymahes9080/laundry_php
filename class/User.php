@@ -23,4 +23,4 @@ class User extends Database implements iUser {
 }//end class
 $user = new User();
 /* End of file User.php */
-/* Location: .//D/xampp/htdocs/laundry/class/User.php */
+/* Location: d:/BACKUP/projects/PHP project/laundry/class/User.php */
