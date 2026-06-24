@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Daily Sales Report Print</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="assets/css/font-awesome.css">
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+    <link href="assets/css/dataTables.bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    
+    <center>
+      <h1>Daily Sales Report</h1>
+      <h2>as of</h2>
+      <h3 id="report-date">YYYY-MM-DD</h3>
+    </center>
+    <br />
+    
+    <div class="table-responsive">
+      <table id="myTable-report" class="table table-bordered table-hover table-striped">
+        <thead>
+          <tr>
+            <th>Customer Name</th>
+            <th><center>Type</center></th>
+            <th><center>Laundry Received</center></th>
+            <th><center>Date Paid</center></th>
+            <th><center>Amount</center></th>
+          </tr>
+        </thead>
+        <tbody id="print-rows">
+          <!-- Populated dynamically -->
+        </tbody>
+        <tfoot>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="right"><strong>TOTAL:</strong></td>
+            <td align="center"><strong id="print-total">₱ 0.00</strong></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <script src="assets/js/jquery-3.1.1.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/jquery.dataTables.min.js"></script>
+    <script src="assets/js/dataTables.bootstrap.min.js"></script>
+    
+    <script type="text/javascript">
+      $(document).ready(function() {
+          // Parse query string
+          const params = new URLSearchParams(window.location.search);
+          const date = params.get('date');
+          $('#report-date').text(date || 'All Dates');
+
+          // Load data from localStorage
+          const sales = JSON.parse(localStorage.getItem('sales')) || [];
+          const filteredSales = date ? sales.filter(s => s.sale_date_paid.startsWith(date)) : sales;
+          
+          let rows = '';
+          let total = 0;
+
+          filteredSales.forEach(s => {
+              total += s.sale_amount;
+              rows += `
+              <tr align="center">
+                  <td align="left">${s.sale_customer_name}</td>
+                  <td>${s.sale_type_desc}</td>
+                  <td>${s.sale_laundry_received}</td>
+                  <td>${s.sale_date_paid}</td>
+                  <td>₱ ${parseFloat(s.sale_amount).toFixed(2)}</td>
+              </tr>`;
+          });
+
+          $('#print-rows').html(rows);
+          $('#print-total').text('₱ ' + total.toFixed(2));
+          $('#myTable-report').DataTable();
+
+          // Auto-print
+          setTimeout(() => {
+              window.print();
+          }, 500);
+      });
+    </script>
+  </body>
+</html>

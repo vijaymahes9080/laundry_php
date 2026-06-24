@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Laundry Administrator</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="assets/css/font-awesome.css">
+    <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+    <link href="assets/css/dataTables.bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+
+      <header class="main-header">
+        <a href="home.html" class="logo">
+          <span class="logo-mini"><b>L</b>AU</span>
+          <span class="logo-lg"><b>LAU</b>NDRY</span>
+        </a>
+        <nav class="navbar navbar-static-top" role="navigation">
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+        </nav>
+      </header>
+
+      <aside class="main-sidebar">
+        <section class="sidebar">
+          <ul class="sidebar-menu">
+            <li class="header">MAIN NAVIGATION</li>
+            <li class="treeview active">
+              <a href="home.html">
+                <i class="fa fa-home"></i>
+                <span>Home</span>
+              </a>
+            </li>
+            <li class="treeview">
+              <a href="laundrytype.html">
+                <i class="fa fa-th-list"></i>
+                <span>Laundry Type</span>
+              </a>
+            </li>
+            <li class="treeview">
+              <a href="report.html">
+                <i class="fa fa-print"></i>
+                <span>Report</span>
+              </a>
+            </li>
+            <li class="header">SETTINGS</li>
+            <li><a id="changePass" href="#"><i class="fa fa-circle-o text-yellow"></i> 
+              <span>Change Password</span></a>
+            </li>
+            <li><a href="#" onclick="localStorage.removeItem('session_user'); window.location.href='index.html';"><i class="fa fa-circle-o text-red"></i> 
+              <span>Logout</span></a>
+            </li>
+          </ul>
+        </section>
+      </aside>
+
+      <div class="content-wrapper">
+        <section class="content-header">
+          <h1>
+            <small>Welcome Administrator!</small>
+          </h1>
+        </section>
+
+        <section class="content">
+          <div class="box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Home</h3>
+              <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              <button id="newLaun" type="button" class="btn btn-success btn-sm"> 
+                New Laundry 
+                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+              </button>
+
+              <button id="claim" type="button" class="btn btn-primary btn-sm">
+                Claim
+                <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+              </button>
+              
+              <button id="delLaun" type="button" class="btn btn-danger btn-sm">
+                Delete
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+              </button>
+              <div id="table-laundry"></div>
+            </div>
+            <div class="box-footer"></div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+          <b>Version</b> 2.3.0
+        </div>
+        <strong>Copyright &copy; 2016-2026 <a href="https://github.com/vijaymahes9080">Vijay Mahes</a>.</strong> All rights reserved.
+      </footer>
+
+      <div class="control-sidebar-bg"></div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Change Password Modal -->
+    <div class="modal fade" id="modal-pass">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Modal title</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal" id="form-change">
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd">Password:</label>
+                <div class="col-sm-10">
+                  <input type="password" class="form-control" id="pwd" placeholder="Enter Password" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" for="pwd2">Confirm:</label>
+                <div class="col-sm-10"> 
+                  <input type="password" class="form-control" id="pwd2" placeholder="Confirm password" required>
+                </div>
+              </div>
+              <div class="form-group"> 
+                <div class="col-sm-offset-2 col-sm-10">
+                  <button type="submit" class="btn btn-success">Save Changes</button>
+                </div>
+              </div>
+            </form>        
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message Box Modal -->
+    <div class="modal fade" id="modal-msg">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Message Box</h4>
+          </div>
+          <div class="modal-body">
+            <h4 id="msg-body">all right</h4>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="message-box-ok" class="btn btn-default" data-dismiss="modal">OK
+              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirm Modal -->
+    <div class="modal fade" id="modal-confirm">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title text-danger">Are you sure?</h4>
+          </div>
+          <div class="modal-body">
+            <div align="center">
+              <strong class="text-danger">
+                <div id="remove-stud-msg">
+                  <h1></h1>
+                </div>
+              </strong>
+              <input type="hidden" id="confirm-type" value="null">
+              <button id="confirm-yes" type="button" class="btn btn-default btn-lg">Yes
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+              </button>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">No
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+              </button>  
+            </div>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Laundry Modal -->
+    <div class="modal fade" id="modal-laun">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Modal title</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal" id="form-new-laun">
+              <input type="hidden" id="laun-type">
+              <input type="hidden" id="laun-id">
+              <div class="form-group">
+                <label class="control-label col-sm-3" for="">Customer Name:</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="customer" placeholder="Enter customer name" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3" for="">Priority #:</label>
+                <div class="col-sm-9">
+                  <input type="number" class="form-control" id="priority" placeholder="Enter priority number" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3" for="">Weight:</label>
+                <div class="col-sm-9">
+                  <input type="number" step="any" class="form-control" id="weight" placeholder="Enter laundry weight" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3" for="">Type:</label>
+                <div class="col-sm-9">
+                  <select class="btn btn-default" id="newlaun-type"></select>
+                </div>
+              </div>
+              <div class="form-group"> 
+                <div class="col-sm-offset-3 col-sm-9">
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery-3.1.1.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="dist/js/app.min.js"></script>
+    <script src="dist/js/demo.js"></script>
+    <script src="assets/js/jquery.dataTables.min.js"></script>
+    <script src="assets/js/dataTables.bootstrap.min.js"></script>
+    <script src="assets/js/admin_static.js"></script>
+  </body>
+</html>
